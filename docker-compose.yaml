@@ -1,0 +1,8 @@
+services:
+  report-server:
+    build: .
+    container_name: playwright-report-server
+    volumes:
+      - ./playwright-report:/app
+    ports:
+      - "9323:9323"
