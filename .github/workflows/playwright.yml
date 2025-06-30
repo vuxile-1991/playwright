@@ -1,4 +1,4 @@
-name: Playwright Tests & Deploy Report
+name: Playwright Test & Report History
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -32,9 +32,17 @@ jobs:
       - name: Add .nojekyll
         run: touch ./playwright-report/.nojekyll
 
-      - name: Deploy to GitHub Pages
+      - name: Generate timestamp
+        id: timestamp
+        run: echo "time=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
+
+      - name: Copy report to timestamped folder
+        run: |
+          mkdir -p report-history/${{ steps.timestamp.outputs.time }}
+          cp -r playwright-report/* report-history/${{ steps.timestamp.outputs.time }}/
+
+      - name: Deploy all reports to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./playwright-report
+          publish_dir: ./report-history
