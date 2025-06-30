@@ -12,4 +12,4 @@ EXPOSE 9323
 
 HEALTHCHECK CMD curl --fail http://localhost:9323 || exit 1
 
-CMD ["http-server", ".", "-p", "9323", "--no-dir-listing"]EXPOSE 9323
+CMD ["http-server", ".", "-p", "9323", "--no-dir-listing"]
